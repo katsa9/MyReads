@@ -1,0 +1,56 @@
+@startuml myReads-solution-design
+
+package src {
+  class App{
+    
+  }
+  class BookshelfList{
+    allBooksList: List of all books - state
+    onShelfUpdated(book, shelf)
+    shelves: names of shelves
+  }
+  class Bookshelf{
+    booksList: Books on this shelf - props
+    name: name of shelf - props
+    onShelfChanged - props
+  }
+  
+  class Book{
+    BookObj: - state
+          -id
+          -bookCover
+          -title
+          -author
+    currentShelf: what shelf it is currently on - state
+    onShelfChanged(book, shelf) - props
+  }
+  class ChangeShelf{
+    shelfList (to render menu)
+    selectedShelf
+    onShelfSelected - props
+  }
+  class AddBook{
+    functional component that navigates to search page
+  }
+  class SearchBook{
+    searchResults - state
+    allBooksList - props
+    onBackClicked - props
+  }
+  class SearchInput{
+    searchText - state
+    onBackClicked - props
+  }
+}
+
+App *--> BookshelfList
+BookshelfList*--> Bookshelf
+Bookshelf *--> Book
+BookshelfList *--> AddBook
+Book *--> ChangeShelf
+SearchBook *--> SearchInput
+SearchBook *--> Bookshelf
+
+
+@enduml
+
