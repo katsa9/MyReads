@@ -10,6 +10,41 @@ body, .app {
 
 /* main page */
 
+/* .list-books {
+  display: flex;
+} */
+
+.hero {
+  width: 100%;
+  position: relative;
+  background-image: url('./icons/bookstack.jpg');
+  background-size: cover;
+  height: 300px;
+  border: 1px solid #979797;
+}
+
+.hero-title {
+  text-align: center;
+  font-family: AmericanTypewriter;
+  font-size: 48px;
+  color: #000000;
+  text-align: left;
+  margin: 2em;
+  text-shadow: 0 4px 4px rgba(0,0,0,0.50);
+}
+
+/* .hero article {
+  box-sizing: border-box;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  bottom: 0;
+  height: 40%;
+  width: 100%;
+  color: #fff;
+  padding: 1em;
+} */
+
 .list-books-title {
   padding: 10px 0;
   background: #2e7c31;
@@ -21,13 +56,22 @@ body, .app {
   color: white;
 }
 
+.bookshelf-container {
+  padding: 80px;
+}
+
 .list-books-content {
   padding: 0 0 80px;
   flex: 1;
 }
 
 .bookshelf {
-  padding: 0 10px 20px;
+  padding: 40px;
+  margin-block: 20px;
+  background: #e9e;
+  background: #FFFFFF;
+box-shadow: 0 2px 22px 0 rgba(116,98,98,0.64);
+border-radius: 29px;
 }
 
 @media (min-width: 600px) {
@@ -37,6 +81,12 @@ body, .app {
 }
 
 .bookshelf-title {
+  font-family: AmericanTypewriter;
+font-size: 25px;
+margin: 20px;
+padding: 1em;
+color: #000000;
+text-align: left;
   border-bottom: 1px solid #dedede;
 }
 .bookshelf-books {
