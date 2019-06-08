@@ -13,12 +13,6 @@ body,
   background: #e9f1f1;
 }
 
-/* main page */
-
-/* .list-books {
-  display: flex;
-} */
-
 .hero {
   width: 100%;
   position: relative;
@@ -74,6 +68,7 @@ body,
   border-radius: 15px;
 }
 
+/* TODO: make hero and quote responsive */
 @media (min-width: 600px) {
   .bookshelf {
     padding: 0 20px 40px;
