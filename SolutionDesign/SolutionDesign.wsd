@@ -7,7 +7,7 @@ package src {
   class BookshelfList{
     allBooksList: List of all books - state
     onShelfUpdated(book, shelf)
-    shelves: names of shelves
+    shelves: names of shelves - props
   }
   class Bookshelf{
     booksList: Books on this shelf - props
@@ -44,6 +44,7 @@ package src {
 }
 
 App *--> BookshelfList
+App *--> SearchBook
 BookshelfList*--> Bookshelf
 Bookshelf *--> Book
 BookshelfList *--> AddBook
