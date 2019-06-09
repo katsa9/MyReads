@@ -3,6 +3,29 @@ import * as BooksAPI from './BooksAPI';
 import PropTypes from 'prop-types'
 
 class SearchBook extends Component {
+  state = {
+    results: [],
+    query: ""
+  }
+
+  onSearchSubmit = (event) => {
+    event.preventDefault();
+    BooksAPI.search(this.state.query)
+    .then((results) => {
+      this.setState(() => ({
+        results: results.books
+      }))
+    })
+    console.log(this.state.results);
+  }
+
+  updateQuery = event => {
+    const { value } = event.target;
+    console.log(event);
+    this.setState(() => 
+    ({query: value }))
+  }
+
   render() {
     return (
 <div className="search-books">
@@ -17,8 +40,12 @@ class SearchBook extends Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
-
+                <form onSubmit={this.onSearchSubmit}>
+                <input type="text" placeholder="Search by title or author"
+                value={this.state.query}
+                onChange={this.updateQuery}
+                />
+                </form>
               </div>
             </div>
             <div className="search-books-results">

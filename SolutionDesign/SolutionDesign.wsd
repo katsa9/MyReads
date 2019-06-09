@@ -35,6 +35,7 @@ package src {
   class SearchBook{
     searchResults - state
     shelvesList - props
+    allBooksList - props - to determine shelves for search results
     onBackClicked - props
     onShelfChanged - props
   }
