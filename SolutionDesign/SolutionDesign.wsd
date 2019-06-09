@@ -34,8 +34,9 @@ package src {
   }
   class SearchBook{
     searchResults - state
-    allBooksList - props
+    shelvesList - props
     onBackClicked - props
+    onShelfChanged - props
   }
   class SearchInput{
     searchText - state
