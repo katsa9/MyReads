@@ -39,7 +39,9 @@ class BooksApp extends React.Component {
                 </blockquote>
         </section>
         {this.state.showSearchPage ? (
-          <SearchBook />
+          <SearchBook 
+          shelfList={this.shelves}
+          />
         ) : (
             <div>
               <BookshelfList 

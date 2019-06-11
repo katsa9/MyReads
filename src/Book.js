@@ -11,6 +11,9 @@ class Book extends Component {
     //   bookCover:"",
     //   author: ""
     // },
+
+    //add additional features like rating/publisher
+    //maybe something that expands with more info 
     currentShelf: {}
   }
 
@@ -31,8 +34,8 @@ class Book extends Component {
               shelfList={shelfList}
             />}
           </div>
-          <div className="book-title">{title}}</div>
-          <div className="book-authors">{author}}</div>
+          <div className="book-title">{title}</div>
+          <div className="book-authors">{author}</div>
         </div>
       </li>
     );
@@ -42,6 +45,7 @@ class Book extends Component {
 PropTypes.propTypes = {
   shelfList: PropTypes.array.isRequired,
   bookData: PropTypes.object.isRequired,
-  onShelfChanged: PropTypes.func.isRequired
+  onShelfChanged: PropTypes.func.isRequired,
+  currentShelf: PropTypes.string.isRequired
 }
 export default Book
