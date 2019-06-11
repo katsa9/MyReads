@@ -36,6 +36,7 @@ class BookshelfList extends Component {
               booksOnShelf={this.state.allBooks.filter((book) => (
                 book.currentShelf === shelf.apiName
               ))}
+              shelfList={shelves}
               />
             ))}
           </div>

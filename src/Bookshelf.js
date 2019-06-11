@@ -4,7 +4,7 @@ import Book from './Book'
 
 class Bookshelf extends Component {
   render () {
-    const {booksOnShelf, shelfName} = this.props;
+    const {booksOnShelf, shelfName, shelfList} = this.props;
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{ shelfName }</h2>
@@ -13,6 +13,7 @@ class Bookshelf extends Component {
             {booksOnShelf.map((book) => (
               <Book 
               bookData={book}
+              shelfList={shelfList}
               />
             ))}
           </ol>
@@ -25,6 +26,7 @@ class Bookshelf extends Component {
 PropTypes.propTypes = {
   booksOnShelf: PropTypes.array.isRequired,
   shelfName: PropTypes.string.isRequired,
+  shelfList: PropTypes.array.isRequired,
   onShelfChanged: PropTypes.func.isRequired
 }
 export default Bookshelf

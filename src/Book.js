@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ChangeShelf from './ChangeShelf';
 
 class Book extends Component {
 
@@ -15,6 +16,7 @@ class Book extends Component {
 
   render () {
     const { id, bookCover, title, author } = this.props.bookData;
+    const {shelfList} = this.props;
     return (
       <li id={id}>
         <div className="book">
@@ -25,15 +27,9 @@ class Book extends Component {
                 height="193">
               </img>
             </div>
-            <div className="book-shelf-changer">
-              <select>
-                <option value="move" disabled>Move to...</option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none">None</option>
-              </select>
-            </div>
+            {<ChangeShelf 
+              shelfList={shelfList}
+            />}
           </div>
           <div className="book-title">{title}}</div>
           <div className="book-authors">{author}}</div>
@@ -44,6 +40,7 @@ class Book extends Component {
 }
 
 PropTypes.propTypes = {
+  shelfList: PropTypes.array.isRequired,
   bookData: PropTypes.object.isRequired,
   onShelfChanged: PropTypes.func.isRequired
 }
