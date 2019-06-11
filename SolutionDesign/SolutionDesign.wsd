@@ -2,7 +2,7 @@
 
 package src {
   class App{
-    
+    shelves
   }
   class BookshelfList{
     allBooksList: List of all books - state
@@ -16,7 +16,7 @@ package src {
   }
   
   class Book{
-    BookObj: - state
+    BookObj: - props
           -id
           -bookCover
           -title
