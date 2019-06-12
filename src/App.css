@@ -158,6 +158,11 @@ body,
   padding: 80px 10px 20px;
 }
 
+.no-results {
+  font-family: 'Helvetica-Light';
+  float: left;
+}
+
 /* books grid */
 
 .books-grid {

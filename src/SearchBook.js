@@ -4,31 +4,49 @@ import PropTypes from 'prop-types'
 import Bookshelf from './Bookshelf';
 
 class SearchBook extends Component {
-  state = {
-    searchResults: [], //these are my book objects
-    query: ""
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchResults: [], //these are my book objects
+      query: ""
+    }
+    this.bookToShelfMap = {};
+  
+    this.props.allBooksList.map((item) => (
+      this.bookToShelfMap[item.id] = item.currentShelf
+    ));
   }
 
   onSearchSubmit = (event) => {
     event.preventDefault();
-    BooksAPI.search(this.state.query)
-      .then((results) => {
+    if (this.state.query === "") {
+      this.setState((currState) => ({
+        searchResults: []
+      }))
+    } else {
+      BooksAPI.search(this.state.query)
+        .then((results) => {
 
-        let newArray = Object.values(results).map((item) => (
-          {
-            id: item.id,
-            title: item.title,
-            bookCover: item.imageLinks ? item.imageLinks.thumbnail : "",
-            author: item.authors[0]
+          let newArray = Object.values(results).map((item) => {
+            let shelf = "none";
+            if(this.bookToShelfMap[item.id]) {
+              shelf = this.bookToShelfMap[item.id];
+            }
+            return ({
+              id: item.id,
+              title: item.title,
+              bookCover: item.imageLinks ? item.imageLinks.thumbnail : "",
+              author: item.authors[0],
+              currentShelf: shelf
+            })
+          })
+          console.log(newArray);
+          this.setState((currState) => ({
+            searchResults: [...this.state.searchResults, ...newArray]
           }))
-        console.log(newArray);
-        this.setState((currState) => ({
-          //map results to my book object
-          //need to cater for more than one author
-          searchResults: [...this.state.searchResults, ...newArray]
-        }))
-        console.log("My obj", this.state.searchResults);
-      })
+          console.log("My obj", this.state.searchResults);
+        })
+    }
 
   }
 
@@ -46,14 +64,6 @@ class SearchBook extends Component {
         <div className="search-books-bar">
           <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
           <div className="search-books-input-wrapper">
-            {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
             <form onSubmit={this.onSearchSubmit}>
               <input type="text" placeholder="Search by title or author"
                 value={this.state.query}
@@ -65,11 +75,13 @@ class SearchBook extends Component {
         <div className="list-books">
           <div className="list-books-content">
             <div className="bookshelf-container">
-              <Bookshelf
+              {this.state.searchResults.length !== 0 
+              ? (<Bookshelf
                 shelfName={"Results"}
                 booksOnShelf={this.state.searchResults}
                 shelfList={shelfList}
-              />
+              />)
+              : (<p>No Results to Display</p>)}
             </div>
           </div>
         </div>
@@ -82,6 +94,6 @@ PropTypes.propTypes = {
   allBooksList: PropTypes.array.isRequired,
   onBackClicked: PropTypes.func.isRequired,
   onShelfChanged: PropTypes.func.isRequired,
-  shelfList: PropTypes.array.isRequired
+  shelves: PropTypes.array.isRequired
 }
 export default SearchBook

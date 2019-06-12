@@ -21,7 +21,8 @@ package src {
           -bookCover
           -title
           -author
-    currentShelf: what shelf it is currently on - state
+          -currentShelf
+    
     onShelfChanged(book, shelf) - props
   }
   class ChangeShelf{

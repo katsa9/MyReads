@@ -2,6 +2,7 @@ import React from 'react'
 import './App.css'
 import SearchBook from './SearchBook'
 import BookshelfList from './BookshelfList'
+import * as BooksAPI from './BooksAPI';
 
 class BooksApp extends React.Component {
   shelves = [{
@@ -17,14 +18,23 @@ class BooksApp extends React.Component {
     apiName: "read"
   }]
 
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
+   state = {
+    allBooks: [],
     showSearchPage: false
+  }
+
+  componentDidMount () {
+    BooksAPI.getAll()
+      .then((allBooks) => {
+        this.setState(() => ({
+          allBooks
+        }))
+      })
+    console.log(this.state.allBooks);
+  }
+
+  handleShelfUpdated = (book, shelf) => {
+    //call api update 
   }
 
   render () {
@@ -40,12 +50,14 @@ class BooksApp extends React.Component {
         </section>
         {this.state.showSearchPage ? (
           <SearchBook 
-          shelfList={this.shelves}
+          shelves={this.shelves}
+          allBooksList={this.state.allBooks}
           />
         ) : (
             <div>
               <BookshelfList 
-                shelves= {this.shelves}
+              shelves= {this.shelves}
+                allBooksList={this.state.allBooks}
               />
               <div className="open-search">
                 <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
