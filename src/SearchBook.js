@@ -26,7 +26,6 @@ class SearchBook extends Component {
     } else {
       BooksAPI.search(this.state.query)
         .then((results) => {
-
           let newArray = Object.values(results).map((item) => {
             let shelf = "none";
             if(this.bookToShelfMap[item.id]) {
@@ -44,21 +43,18 @@ class SearchBook extends Component {
           this.setState((currState) => ({
             searchResults: [...this.state.searchResults, ...newArray]
           }))
-          console.log("My obj", this.state.searchResults);
         })
     }
-
   }
 
   updateQuery = event => {
     const { value } = event.target;
-    console.log(event);
     this.setState(() =>
       ({ query: value }))
   }
 
   render () {
-    const { shelfList } = this.props;
+    const { onShelfChanged, shelfList } = this.props;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -80,6 +76,7 @@ class SearchBook extends Component {
                 shelfName={"Results"}
                 booksOnShelf={this.state.searchResults}
                 shelfList={shelfList}
+                onShelfChanged={onShelfChanged}
               />)
               : (<p>No Results to Display</p>)}
             </div>
@@ -94,6 +91,6 @@ PropTypes.propTypes = {
   allBooksList: PropTypes.array.isRequired,
   onBackClicked: PropTypes.func.isRequired,
   onShelfChanged: PropTypes.func.isRequired,
-  shelves: PropTypes.array.isRequired
+  shelfList: PropTypes.array.isRequired
 }
 export default SearchBook

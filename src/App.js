@@ -5,7 +5,7 @@ import BookshelfList from './BookshelfList'
 import * as BooksAPI from './BooksAPI';
 
 class BooksApp extends React.Component {
-  shelves = [{
+  shelfList = [{
     displayName: "Want to Read",
     apiName: "wantToRead"
   },
@@ -25,6 +25,7 @@ class BooksApp extends React.Component {
 
   componentDidMount () {
     BooksAPI.getAll()
+    //need to parse results and map to my book object - data in different format than expected
       .then((allBooks) => {
         this.setState(() => ({
           allBooks
@@ -33,9 +34,23 @@ class BooksApp extends React.Component {
     console.log(this.state.allBooks);
   }
 
-  handleShelfUpdated = (book, shelf) => {
-    //call api update 
+  // loadBooks () {
+  //   BooksAPI.getAll()
+  //   .then((allBooks) => {
+  //     this.setState(() => ({
+  //       allBooks
+  //     }))
+  //   })
+  // }
+
+    handleShelfUpdated = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+    .then(BooksAPI.getAll()
+    .then((allBooks) => {
+      this.setState({ allBooks })
+    }))
   }
+
 
   render () {
     return (
@@ -50,14 +65,16 @@ class BooksApp extends React.Component {
         </section>
         {this.state.showSearchPage ? (
           <SearchBook 
-          shelves={this.shelves}
+          shelfList={this.shelfList}
           allBooksList={this.state.allBooks}
+          onShelfChanged={this.handleShelfUpdated}
           />
         ) : (
             <div>
               <BookshelfList 
-              shelves= {this.shelves}
+                shelfList= {this.shelfList}
                 allBooksList={this.state.allBooks}
+                onShelfChanged={this.handleShelfUpdated}
               />
               <div className="open-search">
                 <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>

@@ -2,12 +2,12 @@
 
 package src {
   class App{
-    shelves
+    shelfList
   }
   class BookshelfList{
     allBooksList: List of all books - state
     onShelfUpdated(book, shelf)
-    shelves: names of shelves - props
+    shelfList: names of shelfList - props
   }
   class Bookshelf{
     booksList: Books on this shelf - props
@@ -35,8 +35,8 @@ package src {
   }
   class SearchBook{
     searchResults - state
-    shelvesList - props
-    allBooksList - props - to determine shelves for search results
+    shelfListList - props
+    allBooksList - props - to determine shelfList for search results
     onBackClicked - props
     onShelfChanged - props
   }

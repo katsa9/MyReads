@@ -5,19 +5,20 @@ import Bookshelf from './Bookshelf';
 class BookshelfList extends Component {
 
   render () {
-    const { shelves, allBooksList } = this.props;
+    const { shelfList, allBooksList ,onShelfChanged} = this.props;
     return (
       <div className="list-books">
         <div className="list-books-content">
           <div className="bookshelf-container">
-            {shelves.map((shelf) => (
+            {shelfList.map((shelf) => (
               <Bookshelf 
               key={shelf.apiName}
               shelfName={shelf.displayName}
               booksOnShelf={allBooksList.filter((book) => (
                 book.currentShelf === shelf.apiName
               ))}
-              shelfList={shelves}
+              shelfList={shelfList}
+              onShelfChanged={onShelfChanged}
               />
             ))}
           </div>
@@ -28,7 +29,8 @@ class BookshelfList extends Component {
 }
 
 PropTypes.propTypes = {
-  shelves: PropTypes.array.isRequired,
-  allBooksList: PropTypes.array.isRequired
+  shelfList: PropTypes.array.isRequired,
+  allBooksList: PropTypes.array.isRequired,
+  onShelfChanged: PropTypes.func.isRequired
 }
 export default BookshelfList
