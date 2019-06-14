@@ -11,7 +11,6 @@ class SearchBook extends Component {
       query: ""
     }
     this.bookToShelfMap = {};
-  
     this.props.allBooksList.map((item) => (
       this.bookToShelfMap[item.id] = item.currentShelf
     ));
@@ -26,23 +25,29 @@ class SearchBook extends Component {
     } else {
       BooksAPI.search(this.state.query)
         .then((results) => {
-          let newArray = Object.values(results).map((item) => {
-            let shelf = "none";
-            if(this.bookToShelfMap[item.id]) {
-              shelf = this.bookToShelfMap[item.id];
-            }
-            return ({
-              id: item.id,
-              title: item.title,
-              bookCover: item.imageLinks ? item.imageLinks.thumbnail : "",
-              author: item.authors[0],
-              currentShelf: shelf
+          if (results.items.length === 0) {
+            this.setState((currState) => ({
+              searchResults: []
+            }))
+          } else {
+            let newArray = Object.values(results).map((item) => {
+              let shelf = "none";
+              if (this.bookToShelfMap[item.id]) {
+                shelf = this.bookToShelfMap[item.id];
+              }
+              return ({
+                id: item.id,
+                title: item.title,
+                bookCover: item.imageLinks ? item.imageLinks.thumbnail : "",
+                author: item.authors ? item.authors[0] : "No author info",
+                currentShelf: shelf
+              })
             })
-          })
-          console.log(newArray);
-          this.setState((currState) => ({
-            searchResults: [...this.state.searchResults, ...newArray]
-          }))
+            console.log(newArray);
+            this.setState((currState) => ({
+              searchResults: newArray
+            }))
+          }
         })
     }
   }
@@ -71,14 +76,14 @@ class SearchBook extends Component {
         <div className="list-books">
           <div className="list-books-content">
             <div className="bookshelf-container">
-              {this.state.searchResults.length !== 0 
-              ? (<Bookshelf
-                shelfName={"Results"}
-                booksOnShelf={this.state.searchResults}
-                shelfList={shelfList}
-                onShelfChanged={onShelfChanged}
-              />)
-              : (<p>No Results to Display</p>)}
+              {this.state.searchResults.length !== 0
+                ? (<Bookshelf
+                  shelfName={"Results"}
+                  booksOnShelf={this.state.searchResults}
+                  shelfList={shelfList}
+                  onShelfChanged={onShelfChanged}
+                />)
+                : (<p>No Results to Display</p>)}
             </div>
           </div>
         </div>
