@@ -4,28 +4,21 @@ import serializeForm from 'form-serialize'
 
 class ChangeShelf extends Component {
   state = {
-    newShelf: "none"
-  }
-
-  moveBook = (e) => {
-    var shelf = e.target.value
-    this.setState({ shelf: shelf }, () => {
-      this.props.onChangeShelf(this.props.book, shelf)
-    })
+    newShelf: this.props.selectedShelf
   }
 
   handleShelfSelected = (event) => {
-    const {value } = event.target;
+    const { value } = event.target;
     this.setState({newShelf:value}, () => {
       this.props.onShelfSelected(this.props.associatedBook, value)
     })
   }
 
   render () {
-    const {shelfList, selectedShelf} = this.props;
+    const {shelfList} = this.props;
     return (
       <div className="book-shelf-changer">
-        <select value={selectedShelf} 
+        <select value={this.state.newShelf} 
         onChange={this.handleShelfSelected}>
           <option value="move" disabled>Move to...</option>
           {shelfList.map((shelf) => (

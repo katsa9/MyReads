@@ -25,7 +25,7 @@ class SearchBook extends Component {
     } else {
       BooksAPI.search(this.state.query)
         .then((results) => {
-          if (results.items.length === 0) {
+          if (results.error === "empty query") {
             this.setState((currState) => ({
               searchResults: []
             }))
