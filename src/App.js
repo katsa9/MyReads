@@ -24,31 +24,32 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount () {
-    BooksAPI.getAll()
-    //need to parse results and map to my book object - data in different format than expected
-      .then((allBooks) => {
-        this.setState(() => ({
-          allBooks
-        }))
-      })
-    console.log(this.state.allBooks);
+    this.loadBooks();
   }
 
-  // loadBooks () {
-  //   BooksAPI.getAll()
-  //   .then((allBooks) => {
-  //     this.setState(() => ({
-  //       allBooks
-  //     }))
-  //   })
-  // }
+  loadBooks () {
+    let bookList = [];
+    BooksAPI.getAll()
+    //need to parse results and map to my book object - data in different format than expected
+      .then((results) => {
+        bookList = results.map((r) => ({
+            id: r.id,
+            title: r.title,
+            bookCover: r.imageLinks ? r.imageLinks.thumbnail : "",
+            author: r.authors[0],
+            currentShelf: r.shelf
+          }));
+          console.log("bookslist", bookList);
+          this.setState(() => ({
+            allBooks: bookList
+          }))
+          console.log("state", this.state.allBooks);
+        })
+  }
 
     handleShelfUpdated = (book, shelf) => {
     BooksAPI.update(book, shelf)
-    .then(BooksAPI.getAll()
-    .then((allBooks) => {
-      this.setState({ allBooks })
-    }))
+    .then(this.loadBooks());
   }
 
 

@@ -11,7 +11,7 @@ class Book extends Component {
         <div className="book">
           <div className="book-top">
             <div className="book-cover">
-              <img src={bookCover} alt={title}
+              <img src={bookCover ? bookCover : ""} alt={title}
                 width="128"
                 height="193">
               </img>
@@ -24,7 +24,7 @@ class Book extends Component {
             />}
           </div>
           <div className="book-title">{title}</div>
-          <div className="book-authors">{author}</div>
+          <div className="book-authors">{author ? author : ""}</div>
         </div>
       </li>
     )
