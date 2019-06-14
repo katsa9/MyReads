@@ -66,10 +66,24 @@ body,
   border-radius: 15px;
 }
 
-/* TODO: make hero and quote responsive */
 @media (min-width: 600px) {
   .bookshelf {
     padding: 0 20px 40px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .hero-title {
+    padding-left: 50px 0 0 50px;
+    align-content: center;
+    font-size: 38px;
+    margin: 3em 1em;
+  }
+
+  .hero blockquote {
+    padding: 1em;
+    margin: 1em 1em 1em 0;
+    font-size: 16px;
   }
 }
 
