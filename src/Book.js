@@ -3,28 +3,35 @@ import PropTypes from 'prop-types'
 import ChangeShelf from './ChangeShelf';
 
 class Book extends Component {
+
+  onShelfSelected = (value) => {
+    this.props.onShelfChanged(this.props.bookData, value);
+  }
+
   render () {
-    const { shelfList, bookData, onShelfChanged} = this.props;
-    const { id, bookCover, title, author,currentShelf } = this.props.bookData;
+    const { shelfList} = this.props;
+    const { id, imageLinks, title, authors, shelf } = this.props.bookData;
+    const authorString = authors ? authors.join(" & ") : "";
     return (
       <li key={id}>
         <div className="book">
           <div className="book-top">
             <div className="book-cover">
-              <img src={bookCover ? bookCover : ""} alt={title}
+              <img src={imageLinks ? imageLinks.thumbnail : ""} alt={title}
                 width="128"
                 height="193">
               </img>
             </div>
             {<ChangeShelf
               shelfList={shelfList}
-              selectedShelf={currentShelf}
-              onShelfSelected={onShelfChanged}
-              associatedBook={bookData}
+              selectedShelf={shelf}
+              onShelfSelected={this.onShelfSelected}
             />}
           </div>
           <div className="book-title">{title}</div>
-          <div className="book-authors">{author ? author : ""}</div>
+          <div className="book-authors">
+           {authorString}
+          </div>
         </div>
       </li>
     )

@@ -15,7 +15,7 @@ class BookshelfList extends Component {
               key={shelf.apiName}
               shelfName={shelf.displayName}
               booksOnShelf={allBooksList.filter((book) => (
-                book.currentShelf === shelf.apiName
+                book.shelf === shelf.apiName
               ))}
               shelfList={shelfList}
               onShelfChanged={onShelfChanged}

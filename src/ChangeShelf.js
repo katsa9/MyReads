@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import serializeForm from 'form-serialize'
 
 class ChangeShelf extends Component {
   state = {
@@ -9,8 +8,9 @@ class ChangeShelf extends Component {
 
   handleShelfSelected = (event) => {
     const { value } = event.target;
+    console.log("selected value", value);
     this.setState({newShelf:value}, () => {
-      this.props.onShelfSelected(this.props.associatedBook, value)
+      this.props.onShelfSelected(value)
     })
   }
 
@@ -39,7 +39,6 @@ PropTypes.propTypes = {
   shelfList: PropTypes.array.isRequired,
   selectedShelf:PropTypes.string.isRequired,
   onShelfSelected: PropTypes.func.isRequired,
-  associatedBook: PropTypes.object.isRequired
 }
 export default ChangeShelf
 

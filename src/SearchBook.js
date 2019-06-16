@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as BooksAPI from './BooksAPI';
 import PropTypes from 'prop-types'
 import Bookshelf from './Bookshelf';
+import { Link } from 'react-router-dom'
 
 class SearchBook extends Component {
   constructor(props) {
@@ -11,50 +12,50 @@ class SearchBook extends Component {
       query: ""
     }
     this.bookToShelfMap = {};
-    this.props.allBooksList.map((item) => (
-      this.bookToShelfMap[item.id] = item.currentShelf
-    ));
+    this.allBooksList = [];
+
   }
 
-  onSearchSubmit = (event) => {
-    event.preventDefault();
-    if (this.state.query === "") {
-      this.setState((currState) => ({
-        searchResults: []
-      }))
-    } else {
-      BooksAPI.search(this.state.query)
-        .then((results) => {
-          if (results.error === "empty query") {
-            this.setState((currState) => ({
-              searchResults: []
-            }))
-          } else {
-            let newArray = Object.values(results).map((item) => {
-              let shelf = "none";
-              if (this.bookToShelfMap[item.id]) {
-                shelf = this.bookToShelfMap[item.id];
-              }
-              return ({
-                id: item.id,
-                title: item.title,
-                bookCover: item.imageLinks ? item.imageLinks.thumbnail : "",
-                author: item.authors ? item.authors[0] : "No author info",
-                currentShelf: shelf
-              })
-            })
-            console.log(newArray);
-            this.setState((currState) => ({
-              searchResults: newArray
-            }))
-          }
-        })
-    }
+  componentDidMount () {
+    BooksAPI.getAll()
+      .then((allBooks) => {
+        this.allBooksList = allBooks;
+        this.allBooksList.map((item) => (
+          this.bookToShelfMap[item.id] = item.shelf
+        ));
+      })
   }
 
   updateQuery = event => {
     const { value } = event.target;
-    this.setState(() =>
+    let newArray = [];
+    BooksAPI.search(value)
+      .then((results) => {
+        console.log("results", results);
+        if(!results || results.error || results.length === 0) {
+          this.setState((currState) => ({
+            searchResults: newArray
+          }))
+        }else {
+          newArray = Object.values(results).map((item) => {
+            let shelf = "none";
+            if (this.bookToShelfMap[item.id]) {
+              shelf = this.bookToShelfMap[item.id];
+            }
+            return ({
+              id: item.id,
+              title: item.title,
+              imageLinks: item.imageLinks,
+              authors: item.authors,
+              shelf: shelf
+            })
+          })
+          this.setState((currState) => ({
+            searchResults: newArray
+          }))
+        } 
+      })
+      this.setState(() =>
       ({ query: value }))
   }
 
@@ -63,14 +64,16 @@ class SearchBook extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
+          <Link
+            className='close-search'
+            to='/'>
+            Close
+        </Link>
           <div className="search-books-input-wrapper">
-            <form onSubmit={this.onSearchSubmit}>
-              <input type="text" placeholder="Search by title or author"
-                value={this.state.query}
-                onChange={this.updateQuery}
-              />
-            </form>
+            <input type="text" placeholder="Search by title or author"
+              value={this.state.query}
+              onChange={this.updateQuery}
+            />
           </div>
         </div>
         <div className="list-books">
@@ -93,7 +96,6 @@ class SearchBook extends Component {
 }
 
 PropTypes.propTypes = {
-  allBooksList: PropTypes.array.isRequired,
   onBackClicked: PropTypes.func.isRequired,
   onShelfChanged: PropTypes.func.isRequired,
   shelfList: PropTypes.array.isRequired
