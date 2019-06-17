@@ -19,7 +19,7 @@ class SearchBook extends Component {
 
   findShelf = (bookId) => {
     let found = this.props.booksList.filter(book => book.id === bookId);
-    if(found.length !== 0) {
+    if (found.length !== 0) {
       return found.shelf;
     }
     return "none";
@@ -30,32 +30,20 @@ class SearchBook extends Component {
     let newArray = [];
     BooksAPI.search(value)
       .then((results) => {
-        if(!results || results.error || results.length === 0) {
+        if (!results || results.error || results.length === 0) {
           this.setState((currState) => ({
             searchResults: newArray
           }))
-        }else {
-          // this.setState((currState) => ({
-          //     searchResults: results.forEach((item) => {
-          //       item.shelf = this.findShelf(item.id);
-          //     })
-          //   }))
-          newArray = Object.values(results).map((item) => {
-            let shelf = this.findShelf(item.id);
-            return ({
-              id: item.id,
-              title: item.title,
-              imageLinks: item.imageLinks,
-              authors: item.authors,
-              shelf: shelf
+        } else {
+          this.setState((currState) => ({
+            searchResults: Object.values(results).map((item) => {
+              item.shelf = this.findShelf(item.id);
+              return item;
             })
-          })
-          this.setState((currState) => ({
-            searchResults: newArray
           }))
-        } 
+        }
       })
-      this.setState(() =>
+    this.setState(() =>
       ({ query: value }))
   }
 
