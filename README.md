@@ -8,7 +8,7 @@ This project is a book tracking application that allows you to manage your books
 1. Currently reading
 1. Read
 
-The application allows you to search for books and then assign them to one of the above bookshelves. You can also move books fromone shelf to another or remove them from the shelf entirely.
+The application allows you to search for books and then assign them to one of the above bookshelves. You can also move books from one shelf to another or remove them from the shelf entirely.
 
 The front-end makes use of the Udacity Books API which has limited search terms. To see a list of accepted search terms, please see [SEARCH_TERMS.md](SEARCH_TERMS.md)
 
