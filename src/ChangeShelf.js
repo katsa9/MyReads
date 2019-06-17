@@ -8,7 +8,6 @@ class ChangeShelf extends Component {
 
   handleShelfSelected = (event) => {
     const { value } = event.target;
-    console.log("selected value", value);
     this.setState({newShelf:value}, () => {
       this.props.onShelfSelected(value)
     })
