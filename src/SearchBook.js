@@ -11,19 +11,18 @@ class SearchBook extends Component {
       searchResults: [], //these are my book objects
       query: ""
     }
-    this.bookToShelfMap = {};
-    this.allBooksList = [];
-
+    this.findShelf = this.findShelf.bind(this);
   }
 
   componentDidMount () {
-    BooksAPI.getAll()
-      .then((allBooks) => {
-        this.allBooksList = allBooks;
-        this.allBooksList.map((item) => (
-          this.bookToShelfMap[item.id] = item.shelf
-        ));
-      })
+  }
+
+  findShelf = (bookId) => {
+    let found = this.props.booksList.filter(book => book.id === bookId);
+    if(found.length !== 0) {
+      return found.shelf;
+    }
+    return "none";
   }
 
   updateQuery = event => {
@@ -31,17 +30,18 @@ class SearchBook extends Component {
     let newArray = [];
     BooksAPI.search(value)
       .then((results) => {
-        console.log("results", results);
         if(!results || results.error || results.length === 0) {
           this.setState((currState) => ({
             searchResults: newArray
           }))
         }else {
+          // this.setState((currState) => ({
+          //     searchResults: results.forEach((item) => {
+          //       item.shelf = this.findShelf(item.id);
+          //     })
+          //   }))
           newArray = Object.values(results).map((item) => {
-            let shelf = "none";
-            if (this.bookToShelfMap[item.id]) {
-              shelf = this.bookToShelfMap[item.id];
-            }
+            let shelf = this.findShelf(item.id);
             return ({
               id: item.id,
               title: item.title,
@@ -98,6 +98,8 @@ class SearchBook extends Component {
 PropTypes.propTypes = {
   onBackClicked: PropTypes.func.isRequired,
   onShelfChanged: PropTypes.func.isRequired,
-  shelfList: PropTypes.array.isRequired
+  shelfList: PropTypes.array.isRequired,
+  booksList: PropTypes.array.isRequired
+
 }
 export default SearchBook
