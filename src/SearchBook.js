@@ -3,6 +3,7 @@ import * as BooksAPI from './BooksAPI';
 import PropTypes from 'prop-types'
 import Bookshelf from './Bookshelf';
 import { Link } from 'react-router-dom'
+import {debounce} from 'throttle-debounce';
 
 class SearchBook extends Component {
   constructor(props) {
@@ -12,9 +13,7 @@ class SearchBook extends Component {
       query: ""
     }
     this.findShelf = this.findShelf.bind(this);
-  }
-
-  componentDidMount () {
+    this.search = debounce(300, this.search); //limit api calls for this server call
   }
 
   findShelf = (bookId) => {
@@ -25,24 +24,28 @@ class SearchBook extends Component {
     return "none";
   }
 
+  search = (value) => {
+    BooksAPI.search(value)
+    .then((results) => {
+      if (!results || results.error || results.length === 0) {
+        this.setState((currState) => ({
+          searchResults: []
+        }))
+      } else if(value === this.state.query){ //check that we don't overwrite results with older state response
+        this.setState((currState) => ({
+          searchResults: Object.values(results).map((item) => {
+            item.shelf = this.findShelf(item.id);
+            return item;
+          })
+        }))
+      }
+    })
+  }
+
   updateQuery = event => {
     const { value } = event.target;
-    let newArray = [];
-    BooksAPI.search(value)
-      .then((results) => {
-        if (!results || results.error || results.length === 0) {
-          this.setState((currState) => ({
-            searchResults: newArray
-          }))
-        } else {
-          this.setState((currState) => ({
-            searchResults: Object.values(results).map((item) => {
-              item.shelf = this.findShelf(item.id);
-              return item;
-            })
-          }))
-        }
-      })
+    
+    this.search(value);
     this.setState(() =>
       ({ query: value }))
   }
@@ -60,7 +63,7 @@ class SearchBook extends Component {
           <div className="search-books-input-wrapper">
             <input type="text" placeholder="Search by title or author"
               value={this.state.query}
-              onChange={this.updateQuery}
+              onChange={this.updateQuery.bind(this)}
             />
           </div>
         </div>
