@@ -40,12 +40,24 @@ class BooksApp extends React.Component {
     }
     BooksAPI.update(book, apiCall)
       .then((r) => {
-        BooksAPI.getAll()
-          .then((allBooks) => {
+          if(apiCall === " ") {
+            this.setState((currentState) => ({
+              allBooks: currentState.allBooks.filter((b) => {
+                return b.id !== book.id;
+              })
+            }));
+          } else {
+            let bookToUpdate = this.state.allBooks.filter(b => b.id === book.id)[0];
+            let updatedArray = this.state.allBooks.filter(b => b.id !== book.id);
+            if(!bookToUpdate) {
+              bookToUpdate = book;
+            }
+            bookToUpdate.shelf = apiCall;
+            updatedArray.push(bookToUpdate);
             this.setState(() => ({
-              allBooks
-            }))
-          })
+              allBooks: updatedArray
+          }))
+        }
       });
   }
 
